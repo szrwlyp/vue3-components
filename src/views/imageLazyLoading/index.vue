@@ -35,7 +35,6 @@ const lazyImgs = ref([
   <div class="lazy-loading">
     <template v-for="(item, index) of lazyImgs" :key="index">
       <imageComp width="400px" height="400px" :src="item" :lazy="true"></imageComp>
-      <!-- <div style="height: 500px"></div> -->
     </template>
   </div>
 </template>

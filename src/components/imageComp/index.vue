@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, toRefs } from "vue";
-import loadingComp from "./loadingComp.vue";
+import { ref, toRefs } from 'vue'
+import loadingComp from './loadingComp.vue'
 
 /**
  * imageCompProps
@@ -13,34 +13,27 @@ import loadingComp from "./loadingComp.vue";
  * @parma mode 图片裁剪，缩放的模式
  */
 interface IImageCompProps {
-  width?: string | number;
-  height?: string | number;
-  src: string;
-  loading: boolean;
-  error: string;
-  lazy: boolean;
-  mode:
-    | "fill"
-    | "contain"
-    | "cover"
-    | "none"
-    | "scale-down"
-    | "initial"
-    | "inherit";
+  width?: string | number
+  height?: string | number
+  src: string
+  loading?: boolean
+  error: string
+  lazy?: boolean
+  mode?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down' | 'initial' | 'inherit'
 }
 let props = withDefaults(defineProps<IImageCompProps>(), {
-  width: "auto",
-  height: "auto",
+  width: 'auto',
+  height: 'auto',
   loading: true,
-  error: new URL("./loading_error.png", import.meta.url).href,
+  error: new URL('./loading_error.png', import.meta.url).href,
   lazy: false,
-  mode: "cover",
-});
-console.warn(toRefs(props));
+  mode: 'cover'
+})
+console.warn(toRefs(props))
 // let { loading } = toRefs<ILazyImgProps>(props);
-const loading = ref(props.loading);
+const loading = ref(props.loading)
 
-const mode = ref(props.mode);
+const mode = ref(props.mode)
 /**
  * 自定义图片懒加载指令
  */
@@ -48,42 +41,42 @@ const vLazy = {
   mounted: (el: any, binding: any) => {
     // console.log(el);
     // console.log(binding);
-    let { isLazy, src } = binding.value;
+    let { isLazy, src } = binding.value
 
     // 图片不懒加载
     if (!isLazy) {
-      onImageloadingEvent(el, src);
-      return;
+      onImageloadingEvent(el, src)
+      return
     }
 
     // 图片不懒加载
     const observer = new IntersectionObserver(
       ([{ isIntersecting }]) => {
         if (isIntersecting) {
-          observer.unobserve(el);
-          onImageloadingEvent(el, src);
+          observer.unobserve(el)
+          onImageloadingEvent(el, src)
         }
       },
       { threshold: 0.01 }
-    );
-    observer.observe(el);
-  },
-};
+    )
+    observer.observe(el)
+  }
+}
 /**
  * 图片加载事件
  */
 const onImageloadingEvent = (el: any, src: string) => {
   el.onload = () => {
-    loading.value = false;
-  };
+    loading.value = false
+  }
   el.onerror = () => {
-    loading.value = false;
-    el.src = props.error;
-    mode.value = "fill";
-  };
+    loading.value = false
+    el.src = props.error
+    mode.value = 'fill'
+  }
 
-  el.src = src;
-};
+  el.src = src
+}
 </script>
 
 <template>

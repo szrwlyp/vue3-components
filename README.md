@@ -1,25 +1,32 @@
 # vue3-components
 
-This template should help get you started developing with Vue 3 in Vite.
+归纳项目开发中所用到的自定义组件。
 
-## Recommended IDE Setup
+- [图片懒加载组件](#图片懒加载组件)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+<a name="图片懒加载组件"></a>
 
-## Type Support for `.vue` Imports in TS
+## 图片懒加载组件
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+路由路径：/lazyLoading
+文件路径：/src/components/imageComp
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+```
+import imageComp from '@/components/imageComp/index.vue'
+<imageComp width="400px" height="400px" :src="item" :lazy="true" :loading="true" error="xxx/xxx/xxx" mode="cover"></imageComp>
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+```
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+**属性** <br>
+| 属性名 | 说明 | 是否必须 |类型 | 可选值 | 默认值 |
+| -------------- | -------- | ------------| ---------- | -------- |-------- |
+| width | 图片宽度 | 否 | string | - | 'auto' |
+| height | 图片高度 | 否 | string | — | 'auto'|
+| src | 图片地址 | 是 | string |— |-|
+| loading | 图片加载动画 | 否 | boolean | true/false | true |
+| error | 图片加载失败时默认图片 | 是 | string | - | 组件内loading_error.png |
+| lazy | 是否懒加载 | 否 | boolean | true/false | false |
+| mode | 图片裁剪，缩放的模式 | 否 | string | 'fill'/'contain'/'cover'/'none'/'scale-down'/'initial'/'inherit' | 'cover' |
 
 ## Project Setup
 
