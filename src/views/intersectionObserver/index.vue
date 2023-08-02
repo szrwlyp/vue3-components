@@ -1,8 +1,7 @@
 <script setup lang="ts">
-/** IntersectionObserver兼容性方案：​intersection-observer-polyfill​ */
-
 import { ref, onMounted } from 'vue'
 
+/** IntersectionObserver兼容性方案：​intersection-observer-polyfill​ */
 const currentIndex = ref(0)
 const list = ref([{ name: 'item1' }, { name: 'item2' }, { name: 'item3' }, { name: 'item4' }])
 onMounted(() => {

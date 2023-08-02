@@ -16,6 +16,14 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('@/views/imageLazyLoading/index.vue')
+    },
+    {
+      path: '/intersectionObserver',
+      name: 'intersectionObserver',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('@/views/intersectionObserver/index.vue')
     }
   ]
 })
