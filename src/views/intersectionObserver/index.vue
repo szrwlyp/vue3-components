@@ -1,23 +1,41 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
+import type { CalculationOperation } from 'sass'
+import type { log } from 'console'
 /** IntersectionObserver兼容性方案：​intersection-observer-polyfill​ */
 const currentIndex = ref(0)
-const list = ref([{ name: 'item1' }, { name: 'item2' }, { name: 'item3' }, { name: 'item4' }])
+const list = ref([
+  { name: 'item1', style: 'height: 800px; width: 100%; background: pink' },
+  { name: 'item2', style: 'height: 800px; width: 100%; background: green' },
+  { name: 'item3', style: 'height:800px; width: 100%; background: red' },
+  { name: 'item4', style: 'height:800px; width: 100%; background: blue' }
+])
+
+const tabListRef = ref([])
+const scroll = (index: any) => {
+  if (currentIndex.value == index) return
+
+  currentIndex.value = index
+  scrollRootRef.value.scrollTop = tabListRef.value[index].offsetTop
+  // tabListRef.value[index].scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+const scrollRootRef = ref()
 onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
-      // const item = entries.find((item) => item.isIntersecting === true)
       entries.forEach((item, index) => {
         if (item.isIntersecting && !item.isVisible) {
+          console.log(item)
           currentIndex.value = Number(item?.target.id)
         }
       })
     },
     {
+      root: scrollRootRef.value,
       trackVisibility: true,
-      delay: 100
-      // threshold: [0.1]
+      delay: 100,
+      threshold: [0.001]
     }
   )
   Array.from(document.getElementsByClassName('item')).forEach((item, index) => {
@@ -29,36 +47,21 @@ onMounted(() => {
 <template>
   <ul class="nav-item">
     <template v-for="(item, index) in list" :key="index">
-      <li :class="{ select: index === currentIndex }">
+      <li :class="{ select: index === currentIndex }" @click="scroll(index)">
         {{ item.name }}
       </li>
     </template>
   </ul>
-  <div style="padding-top: 50px">
-    <div
-      class="item"
-      id="0"
-      data-index="0"
-      style="height: 800px; width: 100%; background: pink"
-    ></div>
-    <div
-      class="item"
-      id="1"
-      data-index="1"
-      style="height: 800px; width: 100%; background: green"
-    ></div>
-    <div
-      class="item"
-      id="2"
-      data-index="2"
-      style="height: 800px; width: 100%; background: red"
-    ></div>
-    <div
-      class="item"
-      id="3"
-      data-index="3"
-      style="height: 800px; width: 100%; background: blue"
-    ></div>
+  <div class="item-content" ref="scrollRootRef">
+    <template v-for="(item, index) of list" :key="index">
+      <div
+        :ref="(el) => (tabListRef[index] = el)"
+        class="item"
+        :id="index"
+        :data-index="index"
+        :style="item.style"
+      ></div>
+    </template>
   </div>
 </template>
 
@@ -70,9 +73,9 @@ onMounted(() => {
   display: grid;
   padding: 0;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  position: fixed;
+  /* position: fixed;
   top: 0;
-  left: 0;
+  left: 0; */
   background: #fff;
   li {
     text-align: center;
@@ -87,5 +90,11 @@ onMounted(() => {
     background: rgba(17, 134, 255, 0.7);
     color: #fff;
   }
+}
+.item-content {
+  height: calc(100vh - 50px);
+  overflow-y: scroll;
+
+  /* padding-top: 50px; */
 }
 </style>
