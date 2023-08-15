@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "intersection-observer": "^0.12.2",
     "pinia": "^2.1.4",
     "sass": "^1.64.2",
     "vue": "^3.3.4",

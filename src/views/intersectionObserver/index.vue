@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import Test from '@/components/test/index.vue'
 
-import type { CalculationOperation } from 'sass'
-import type { log } from 'console'
-/** IntersectionObserver兼容性方案：​intersection-observer-polyfill​ */
 const currentIndex = ref(0)
 const list = ref([
   { name: 'item1', style: 'height: 800px; width: 100%; background: pink' },
@@ -12,7 +10,7 @@ const list = ref([
   { name: 'item4', style: 'height:800px; width: 100%; background: blue' }
 ])
 
-const tabListRef = ref([])
+const tabListRef = ref<Array<any>>([])
 const scroll = (index: any) => {
   if (currentIndex.value == index) return
 
@@ -62,6 +60,7 @@ onMounted(() => {
         :style="item.style"
       ></div>
     </template>
+    <Test loading="aaa"></Test>
   </div>
 </template>
 

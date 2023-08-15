@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs } from 'vue'
+import { ref, toRefs, toRef, onMounted } from 'vue'
 import loadingComp from './loadingComp.vue'
 
 /**
@@ -17,7 +17,7 @@ interface IImageCompProps {
   height?: string | number
   src: string
   loading?: boolean
-  error: string
+  error?: string
   lazy?: boolean
   mode?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down' | 'initial' | 'inherit'
 }
@@ -29,18 +29,17 @@ let props = withDefaults(defineProps<IImageCompProps>(), {
   lazy: false,
   mode: 'cover'
 })
-console.warn(toRefs(props))
-// let { loading } = toRefs<ILazyImgProps>(props);
-const loading = ref(props.loading)
+// let { loading, mode } = toRefs(props)
 
+// eslint-disable-next-line vue/no-setup-props-destructure
+const loading = ref(props.loading)
+// eslint-disable-next-line vue/no-setup-props-destructure
 const mode = ref(props.mode)
 /**
  * 自定义图片懒加载指令
  */
 const vLazy = {
   mounted: (el: any, binding: any) => {
-    // console.log(el);
-    // console.log(binding);
     let { isLazy, src } = binding.value
 
     // 图片不懒加载
@@ -49,7 +48,10 @@ const vLazy = {
       return
     }
 
-    // 图片不懒加载
+    // 图片懒加载
+    /**
+     * rootMargin 图片懒加载中的预加载
+     */
     const observer = new IntersectionObserver(
       ([{ isIntersecting }]) => {
         if (isIntersecting) {
@@ -57,7 +59,7 @@ const vLazy = {
           onImageloadingEvent(el, src)
         }
       },
-      { threshold: 0.01 }
+      { threshold: 0.01, rootMargin: '0px 0px 800px 0px' }
     )
     observer.observe(el)
   }
@@ -77,6 +79,12 @@ const onImageloadingEvent = (el: any, src: string) => {
 
   el.src = src
 }
+// onMounted(() => {
+//   setTimeout(() => {
+//     console.log('aaa')
+//     loading.value = false
+//   }, 3000)
+// })
 </script>
 
 <template>
